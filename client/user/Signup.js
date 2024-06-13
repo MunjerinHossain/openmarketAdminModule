@@ -14,6 +14,11 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import {Link} from 'react-router-dom'
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -38,7 +43,14 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: 'auto',
     marginBottom: theme.spacing(2)
-  }
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 }))
 
 export default function Signup() {
@@ -47,6 +59,7 @@ export default function Signup() {
     name: '',
     password: '',
     email: '',
+    role:'',
     open: false,
     error: ''
   })
@@ -55,11 +68,13 @@ export default function Signup() {
     setValues({ ...values, [name]: event.target.value })
   }
 
+  console.log('roles', values.role);
   const clickSubmit = () => {
     const user = {
       name: values.name || undefined,
       email: values.email || undefined,
-      password: values.password || undefined
+      password: values.password || undefined,
+      role: values.role || undefined
     }
     create(user).then((data) => {
       if (data.error) {
@@ -79,7 +94,24 @@ export default function Signup() {
           <TextField id="name" label="Name" className={classes.textField} value={values.name} onChange={handleChange('name')} margin="normal"/><br/>
           <TextField id="email" type="email" label="Email" className={classes.textField} value={values.email} onChange={handleChange('email')} margin="normal"/><br/>
           <TextField id="password" type="password" label="Password" className={classes.textField} value={values.password} onChange={handleChange('password')} margin="normal"/>
-          <br/> {
+          <br/> 
+         
+          <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-label">Select Role:</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={values.role}
+          onChange={handleChange('role')}
+        >
+          <MenuItem value={'admin'}>Admin</MenuItem>
+          <MenuItem value={'buyer'}>Buyer</MenuItem>
+          <MenuItem value={'seller'}>Seller</MenuItem>
+          <MenuItem value={'logistic'}>Logistic</MenuItem>
+        </Select>
+      </FormControl>
+      <br/>
+          {
             values.error && (<Typography component="p" color="error">
               <Icon color="error" className={classes.error}>error</Icon>
               {values.error}</Typography>)
