@@ -6,18 +6,20 @@ import config from './../../config/config'
 const signin = async (req, res) => {
   try {
     let user = await User.findOne({
-      "email": req.body.email
+      "email": req.body.email,
+      "role": req.body.role
     })
     if (!user)
       return res.status('401').json({
-        error: "User not found"
+        error: "User not found or use the correct role!"
       })
-
+        
     if (!user.authenticate(req.body.password)) {
       return res.status('401').send({
         error: "Email and password don't match."
       })
     }
+
 
     const token = jwt.sign({
       _id: user._id
