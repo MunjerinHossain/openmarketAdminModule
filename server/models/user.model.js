@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: "Password is required"
   },
+  role: {
+    type: String,
+    enum: ["buyer", "seller", "logistic", "admin"],
+  },
   salt: String,
   updated: Date,
   created: {
